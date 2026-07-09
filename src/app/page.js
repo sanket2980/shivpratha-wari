@@ -108,9 +108,8 @@ export default function Home() {
   };
 
   const upiId = '7020883433@ybl';
-  // Omitting 'pn' (payee name) and 'tn' (transaction note) entirely. 
-  // For personal VPAs, letting the app fetch the registered name automatically is often the only way to bypass security string-matching errors.
-  const params = `pa=${upiId}&am=${formData.amount}&cu=INR`;
+  const payeeName = 'Shubham Sunil Barmukh';
+  const params = `pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${formData.amount}&tn=Wari+Seva+Donation&cu=INR`;
   
   const upiIntent = `upi://pay?${params}`;
   const gpayIntent = `tez://upi/pay?${params}`;
@@ -198,32 +197,22 @@ export default function Home() {
             <p className="text-gray-500 text-sm leading-relaxed">{t('paymentInstruction')}</p>
           </div>
 
-          <div className="flex justify-center p-4 bg-gray-50 rounded-xl border border-gray-100">
-            <QRCodeSVG value={upiIntent} size={200} level="M" includeMargin={true} />
+          <div className="flex flex-col items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
+            <QRCodeSVG value={upiIntent} size={200} level="M" includeMargin={true} className="bg-white p-2 rounded-lg shadow-sm" />
+            <p className="text-sm text-gray-500 font-medium text-center">Scan with any UPI app (GPay, PhonePe, Paytm)</p>
           </div>
 
-          <div className="flex flex-col gap-3">
-            <a 
-              href={gpayIntent} 
-              className="flex items-center justify-center gap-3 bg-white border border-gray-200 text-gray-800 font-semibold px-6 py-3 rounded-xl shadow-sm hover:bg-gray-50 transition-colors"
-            >
-              <img src="/gpay.png" alt="GPay" className="h-6 w-auto object-contain" />
-              Pay with GPay
-            </a>
-            <a 
-              href={phonepeIntent} 
-              className="flex items-center justify-center gap-3 bg-[#5f259f] text-white font-semibold px-6 py-3 rounded-xl shadow-sm hover:bg-[#4b1d7e] transition-colors"
-            >
-              <img src="/phonepe.png" alt="PhonePe" className="h-6 w-auto object-contain" />
-              Pay with PhonePe
-            </a>
+          <div className="flex flex-col gap-2">
             <a 
               href={upiIntent} 
-              className="flex items-center justify-center gap-3 bg-brand-gold/20 text-brand-navy font-semibold px-6 py-3 rounded-xl hover:bg-brand-gold/30 transition-colors"
+              className="flex items-center justify-center gap-3 bg-brand-navy text-white font-semibold px-6 py-3 rounded-xl shadow-sm hover:bg-brand-navy/90 transition-colors"
             >
-              <img src="/upi.png" alt="UPI" className="h-6 w-auto object-contain" />
-              Other UPI Apps
+              <img src="/upi.png" alt="UPI" className="h-6 w-auto object-contain brightness-0 invert" />
+              Pay via UPI App
             </a>
+            <p className="text-xs text-gray-500 text-center mt-1">
+              If the button above fails, please scan the QR code from another phone.
+            </p>
           </div>
           
           <div className="text-center text-lg font-semibold text-gray-700">
