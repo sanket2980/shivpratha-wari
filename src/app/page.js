@@ -109,7 +109,11 @@ export default function Home() {
 
   const upiId = '7020883433@ybl';
   const payeeName = 'Shivpratha Foundation';
-  const upiIntent = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${formData.amount}&tn=Wari+Seva+Donation&cu=INR`;
+  const params = `pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${formData.amount}&tn=Wari+Seva+Donation&cu=INR`;
+  
+  const upiIntent = `upi://pay?${params}`;
+  const gpayIntent = `tez://upi/pay?${params}`;
+  const phonepeIntent = `phonepe://pay?${params}`;
 
   return (
     <div className="max-w-md w-full mx-auto bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
@@ -197,12 +201,27 @@ export default function Home() {
             <QRCodeSVG value={upiIntent} size={200} level="M" includeMargin={true} />
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex flex-col gap-3">
+            <a 
+              href={gpayIntent} 
+              className="flex items-center justify-center gap-3 bg-white border border-gray-200 text-gray-800 font-semibold px-6 py-3 rounded-xl shadow-sm hover:bg-gray-50 transition-colors"
+            >
+              <img src="/gpay.png" alt="GPay" className="h-6 w-auto object-contain" />
+              Pay with GPay
+            </a>
+            <a 
+              href={phonepeIntent} 
+              className="flex items-center justify-center gap-3 bg-[#5f259f] text-white font-semibold px-6 py-3 rounded-xl shadow-sm hover:bg-[#4b1d7e] transition-colors"
+            >
+              <img src="/phonepe.png" alt="PhonePe" className="h-6 w-auto object-contain" />
+              Pay with PhonePe
+            </a>
             <a 
               href={upiIntent} 
-              className="bg-brand-gold/20 text-brand-navy font-semibold px-6 py-2 rounded-lg hover:bg-brand-gold/30 transition-colors"
+              className="flex items-center justify-center gap-3 bg-brand-gold/20 text-brand-navy font-semibold px-6 py-3 rounded-xl hover:bg-brand-gold/30 transition-colors"
             >
-              {t('payViaApp')}
+              <img src="/upi.png" alt="UPI" className="h-6 w-auto object-contain" />
+              Other UPI Apps
             </a>
           </div>
           
