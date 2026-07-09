@@ -108,7 +108,7 @@ export default function Home() {
   };
 
   const upiId = '7020883433@ybl';
-  const payeeName = 'Shubham Barmukh';
+  const payeeName = 'Shubham Sunil Barmukh';
   const params = `pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${formData.amount}&tn=Wari+Seva+Donation&cu=INR`;
   
   const upiIntent = `upi://pay?${params}`;
