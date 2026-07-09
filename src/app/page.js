@@ -108,8 +108,9 @@ export default function Home() {
   };
 
   const upiId = '7020883433@ybl';
-  const payeeName = 'Shubham Sunil Barmukh';
-  const params = `pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${formData.amount}&tn=Wari+Seva+Donation&cu=INR`;
+  // Omitting 'pn' (payee name) and 'tn' (transaction note) entirely. 
+  // For personal VPAs, letting the app fetch the registered name automatically is often the only way to bypass security string-matching errors.
+  const params = `pa=${upiId}&am=${formData.amount}&cu=INR`;
   
   const upiIntent = `upi://pay?${params}`;
   const gpayIntent = `tez://upi/pay?${params}`;
