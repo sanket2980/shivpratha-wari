@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react';
 import { useLanguage } from '@/components/LanguageProvider';
-import { QRCodeSVG } from 'qrcode.react';
 import { supabase } from '@/lib/supabase';
 import { UploadCloud, CheckCircle, Loader2, Download } from 'lucide-react';
 import { toPng } from 'html-to-image';
@@ -12,6 +11,7 @@ export default function Home() {
   const { t } = useLanguage();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
   const receiptRef = useRef(null);
 
   const downloadReceipt = () => {
@@ -115,6 +115,12 @@ export default function Home() {
   const gpayIntent = `tez://upi/pay?${params}`;
   const phonepeIntent = `phonepe://pay?${params}`;
 
+  const handleCopyUPI = () => {
+    navigator.clipboard.writeText(upiId);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="max-w-md w-full mx-auto bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
       
@@ -197,9 +203,33 @@ export default function Home() {
             <p className="text-gray-500 text-sm leading-relaxed">{t('paymentInstruction')}</p>
           </div>
 
-          <div className="flex flex-col items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
-            <QRCodeSVG value={upiIntent} size={200} level="M" includeMargin={true} className="bg-white p-2 rounded-lg shadow-sm" />
-            <p className="text-sm text-gray-500 font-medium text-center">Scan with any UPI app (GPay, PhonePe, Paytm)</p>
+          <div className="flex flex-col items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+            <div className="relative group overflow-hidden rounded-lg shadow-sm border border-gray-200 bg-white p-3 transition-transform duration-300 hover:scale-[1.02]">
+              <img 
+                src="/qr.jpg" 
+                alt="PhonePe QR Code" 
+                className="w-52 h-52 object-contain"
+              />
+            </div>
+            <div className="text-center space-y-2 w-full px-2">
+              <p className="text-xs text-gray-500 font-medium">Scan with any UPI app (GPay, PhonePe, Paytm)</p>
+              <div className="flex items-center justify-between gap-2 bg-white p-2.5 rounded-lg border border-gray-200 w-full">
+                <span className="text-xs text-gray-800 font-mono font-bold select-all overflow-x-auto whitespace-nowrap scrollbar-none">
+                  {upiId}
+                </span>
+                <button
+                  onClick={handleCopyUPI}
+                  className={`text-xs px-2.5 py-1 rounded-md font-bold transition-all duration-200 ${
+                    copied 
+                      ? 'bg-green-50 text-green-600 border border-green-200' 
+                      : 'bg-brand-navy text-white hover:bg-brand-navy/90 active:scale-95'
+                  }`}
+                  type="button"
+                >
+                  {copied ? 'Copied' : 'Copy'}
+                </button>
+              </div>
+            </div>
           </div>
 
           <div className="flex flex-col gap-2">
